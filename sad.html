@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Special Dost 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    font-family:'Nunito',sans-serif;
+    background:linear-gradient(135deg,#ffb6c1,#c084fc);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    color:white;
+}
+
+.box{
+    width:95%;
+    max-width:520px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(15px);
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 0 30px rgba(255,255,255,0.3);
+    animation:fadeIn 1s ease;
+}
+
+h1{
+    font-family:'Dancing Script',cursive;
+    font-size:32px;
+}
+
+button{
+    margin-top:20px;
+    padding:10px 25px;
+    border:none;
+    border-radius:25px;
+    background:white;
+    color:#ff4da6;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 20px white;
+}
+
+input{
+    padding:8px;
+    border-radius:20px;
+    border:none;
+    text-align:center;
+    margin-top:10px;
+}
+
+.hidden{display:none;}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(20px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+.heart{
+    position:absolute;
+    font-size:20px;
+    animation:float 6s linear infinite;
+}
+
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<div class="box">
+    <h1>Heyy Babu ❤️</h1>
+    <p id="content">Mujhe tumse kuch important kehna hai...</p>
+    <div id="extra"></div>
+    <button onclick="next()">Next ➜</button>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+let step=0;
+
+function next(){
+    step++;
+    const text=document.getElementById("content");
+    const extra=document.getElementById("extra");
+
+    switch(step){
+
+        case 1:
+            text.innerHTML="Clue 1: Yaad hai jab hum bina wajah hase the? 😌";
+            break;
+
+        case 2:
+            text.innerHTML="Clue 2: Jab tu gussa hoti hai to sabse zyada tension kaun leta hai? 🥺";
+            break;
+
+        case 3:
+            text.innerHTML="Clue 3: Teri ek smile mera pura din better bana deti hai 💕";
+            break;
+
+        case 4:
+            text.innerHTML="Clue 4: Agar main time machine laa sakta...";
+            extra.innerHTML="<p>To sabse pehle kya theek karta?</p><input id='ans' placeholder='Type here'><br><button onclick='check()'>Submit</button>";
+            break;
+
+        case 5:
+            text.innerHTML="Clue 5: Tu meri sirf dost nahi... meri bakchodi partner bhi hai 😂❤️";
+            extra.innerHTML="";
+            break;
+
+        case 6:
+            text.innerHTML="Clue 6: Agar tu mujhe maaf kar de... to main sabse pehle kya karunga? 🤍";
+            break;
+
+        case 7:
+            text.innerHTML="Secret Locker For My Dost 🔒";
+            extra.innerHTML="<p>Password daalo babu 💌</p><input type='password' id='pass'><br><button onclick='unlock()'>Unlock</button><p id='secret' class='hidden' style='margin-top:15px;font-family:Dancing Script;font-size:22px;'>Oye Babu 😌❤️<br><br>Tu sirf meri dost nahi hai...<br>Tu meri hasi ka reason hai,<br>meri bakchodi partner hai,<br>meri tension ka solution hai 💕<br><br>Agar tu gussa hai to duniya thodi boring lagti hai 🥺<br><br>Sorry yaar... galti ho gayi hogi mujhse,<br>par dosti wali jagah pe sirf tu hi hai 🤍<br><br>Please smile kar de na... warna main aur senti ho jaunga 😭✨</p>";
+            break;
+    }
+}
+
+function check(){
+    let val=document.getElementById("ans").value.toLowerCase();
+    if(val==="apni galti"){
+        alert("Correct 😌❤️");
+        step=4;
+        next();
+    }else{
+        alert("Hint: Jo sabse badi mistake thi woh 😉");
+    }
+}
+
+function unlock(){
+    let p=document.getElementById("pass").value;
+    if(p==="babu"){
+        document.getElementById("secret").classList.remove("hidden");
+        startConfetti();
+    }else{
+        alert("Galat password 😏 Hint: Jo main tumhe bulata hu ❤️");
+    }
+}
+
+function startConfetti(){
+    const canvas=document.getElementById("confetti");
+    const ctx=canvas.getContext("2d");
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+
+    let pieces=[];
+    for(let i=0;i<120;i++){
+        pieces.push({
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height,
+            r:Math.random()*6+4
+        });
+    }
+
+    function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle="white";
+        pieces.forEach(p=>{
+            ctx.beginPath();
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+            ctx.fill();
+            p.y+=2;
+            if(p.y>canvas.height) p.y=0;
+        });
+    }
+    setInterval(draw,20);
+}
+
+// floating hearts background
+setInterval(()=>{
+    let h=document.createElement("div");
+    h.classList.add("heart");
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},800);
+
+</script>
+
+</body>
+</html>
